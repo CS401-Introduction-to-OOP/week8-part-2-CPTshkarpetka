@@ -1,16 +1,22 @@
-﻿using Week8;
+﻿namespace Week8.Task3;
 
-var container = new DataContainer<DataItem>();
-for (int i = 0; i < 10000; i++)
+class Program
 {
-    var item = new DataItem
+    void Main()
     {
-        Id = $"item-{i}",
-        Payload = new byte[1024]
-    };
-    container.AddItem(item);
+        var container = new DataContainer<DataItem>();
+        for (int i = 0; i < 10000; i++)
+        {
+            var item = new DataItem
+            {
+                Id = $"item-{i}",
+                Payload = new byte[1024]
+            };
+            container.AddItem(item);
+        }
+        Console.WriteLine($"Total size before GC: {container.GetTotalSize()} bytes");
+        GC.Collect();
+        Console.WriteLine("GC.Collect() was called.");
+        Console.WriteLine($"Total size after GC: {container.GetTotalSize()} bytes");
+    }
 }
-Console.WriteLine($"Total size before GC: {container.GetTotalSize()} bytes");
-GC.Collect();
-Console.WriteLine("GC.Collect() was called.");
-Console.WriteLine($"Total size after GC: {container.GetTotalSize()} bytes");
